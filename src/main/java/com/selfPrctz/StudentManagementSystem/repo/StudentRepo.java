@@ -14,4 +14,5 @@ import java.util.List;
 public interface StudentRepo extends JpaRepository<Student,Long> {
 
     List<Student> findAllByActiveStateEquals(boolean activeState);
+
 }

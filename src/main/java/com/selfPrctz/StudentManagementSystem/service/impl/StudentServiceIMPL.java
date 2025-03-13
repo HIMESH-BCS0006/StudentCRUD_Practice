@@ -6,6 +6,7 @@ import com.selfPrctz.StudentManagementSystem.dto.request.StudentUpdateDTO;
 import com.selfPrctz.StudentManagementSystem.entity.Student;
 import com.selfPrctz.StudentManagementSystem.repo.StudentRepo;
 import com.selfPrctz.StudentManagementSystem.service.StudentService;
+import com.selfPrctz.StudentManagementSystem.util.mappers.StudentMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -18,20 +19,12 @@ public class StudentServiceIMPL implements StudentService {
     @Autowired
     private StudentRepo studentRepo;
 
+    @Autowired
+    private StudentMapper studentMapper;
+
     @Override
     public String saveStudent(StudentDTO studentDTO) {
-        Student student = new Student(
-                studentDTO.getId(),
-                studentDTO.getFirstName(),
-                studentDTO.getLastName(),
-                studentDTO.getNic(),
-                studentDTO.getContactNumber(),
-                studentDTO.getDateOfBirth(),
-                studentDTO.getAddress(),
-                studentDTO.getGender(),
-                studentDTO.isActiveState()
-
-        );
+        Student student = studentMapper.dtoToentity(studentDTO);
 
         studentRepo.save(student);
 
@@ -42,17 +35,17 @@ public class StudentServiceIMPL implements StudentService {
     public StudentDTO getStudentById(long studentId) {
         if (studentRepo.existsById(studentId)) {
             Student student = studentRepo.getReferenceById(studentId);
-            StudentDTO studentDTO = new StudentDTO(
-                    student.getId(),
-                    student.getFirstName(),
-                    student.getLastName(),
-                    student.getNic(),
-                    student.getContactNumber(),
-                    student.getDateOfBirth(),
-                    student.getAddress(),
-                    student.getGender(),
-                    student.isActiveState()
-            );
+            StudentDTO studentDTO = studentMapper.entityTODTO(student);
+//                    student.getId(),
+//                    student.getFirstName(),
+//                    student.getLastName(),
+//                    student.getNic(),
+//                    student.getContactNumber(),
+//                    student.getDateOfBirth(),
+//                    student.getAddress(),
+//                    student.getGender(),
+//                    student.isActiveState()
+//            );
             return studentDTO;
 
 
@@ -80,24 +73,24 @@ public class StudentServiceIMPL implements StudentService {
     @Override
     public List<StudentDTO> getAllStudents() {
         List<Student> allStudents = studentRepo.findAll();
-        List<StudentDTO> studentDTOList = new ArrayList<>();
+        List<StudentDTO> studentDTOList = studentMapper.entityListTODTOList(allStudents);
 
-        for(Student student : allStudents){
-            StudentDTO studentDTO = new StudentDTO(
-                    student.getId(),
-                    student.getFirstName(),
-                    student.getLastName(),
-                    student.getNic(),
-                    student.getContactNumber(),
-                    student.getDateOfBirth(),
-                    student.getAddress(),
-                    student.getGender(),
-                    student.isActiveState()
-            );
-
-            studentDTOList.add(studentDTO);
-
-        }
+//        for(Student student : allStudents){
+//            StudentDTO studentDTO = new StudentDTO(
+//                    student.getId(),
+//                    student.getFirstName(),
+//                    student.getLastName(),
+//                    student.getNic(),
+//                    student.getContactNumber(),
+//                    student.getDateOfBirth(),
+//                    student.getAddress(),
+//                    student.getGender(),
+//                    student.isActiveState()
+//            );
+//
+//            studentDTOList.add(studentDTO);
+//
+//        }
 
 
 
@@ -123,24 +116,25 @@ public class StudentServiceIMPL implements StudentService {
         
         List<Student> studentList = studentRepo.findAllByActiveStateEquals(activeState);
 
-        List<StudentDTO> studentDTOList = new ArrayList<>();
+        List<StudentDTO> studentDTOList = studentMapper.entityListTODTOList(studentList);
 
-        for(Student student : studentList){
-            StudentDTO studentDTO = new StudentDTO(
-                    student.getId(),
-                    student.getFirstName(),
-                    student.getLastName(),
-                    student.getNic(),
-                    student.getContactNumber(),
-                    student.getDateOfBirth(),
-                    student.getAddress(),
-                    student.getGender(),
-                    student.isActiveState()
-            );
+//        for(Student student : studentList){
+//            StudentDTO studentDTO = new StudentDTO(
+//                    student.getId(),
+//                    student.getFirstName(),
+//                    student.getLastName(),
+//                    student.getNic(),
+//                    student.getContactNumber(),
+//                    student.getDateOfBirth(),
+//                    student.getAddress(),
+//                    student.getGender(),
+//                    student.isActiveState()
+//            );
+//
+//            studentDTOList.add(studentDTO);
+//
+//        }
 
-            studentDTOList.add(studentDTO);
-
-        }
         return studentDTOList;
 
     }
