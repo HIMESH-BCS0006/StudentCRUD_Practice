@@ -2,13 +2,11 @@ package com.selfPrctz.StudentManagementSystem.entity;
 
 
 import io.hypersistence.utils.hibernate.type.json.JsonType;
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 import org.hibernate.annotations.Type;
 
 import java.util.List;
+import java.util.Set;
 
 @Entity
 @Table(name = "student")
@@ -43,6 +41,15 @@ public class Student {
 
     @Column(name = "active_state", columnDefinition = "TINYINT default 0")
     private boolean activeState;
+
+    @OneToMany(mappedBy = "student")
+    Set<Enrollment> enrollments;
+
+
+
+
+
+
 
     public Student() {
     }
